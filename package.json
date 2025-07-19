@@ -1,0 +1,25 @@
+{
+  "name": "api-front",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/Victor-GBarbosa/API-Front#readme",
+  "bugs": {
+    "url": "https://github.com/Victor-GBarbosa/API-Front/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Victor-GBarbosa/API-Front.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node watch server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.0",
+    "envdot": "^0.0.3"
+  }
+}

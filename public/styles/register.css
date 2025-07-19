@@ -1,0 +1,237 @@
+:root {
+  --ltext-color: #333333;
+  --plcolor: #1e81b0;
+  --background-color: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --button-hover-color: #155a75;
+  --input-border-color: #e1e5e9;
+  --input-focus-color: #1e81b0;
+  --shadow-color: rgba(0, 0, 0, 0.15);
+  --error-color: #e74c3c;
+  --success-color: #27ae60;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+  background: var(--background-color);
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  box-sizing: border-box;
+}
+
+.logo-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 25px;
+}
+
+#brand-name {
+  font-weight: bolder;
+  color: white;
+  font-size: 3em;
+}
+
+.logo-section img {
+  max-width: 100px;
+  max-height: 100px;
+  align-items: center;
+}
+
+.register-section {
+  padding: 40px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  box-shadow: 0 20px 40px var(--shadow-color);
+  max-width: 520px;
+  width: 100%;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.register-section h2 {
+  margin-bottom: 30px;
+  color: var(--ltext-color);
+  font-size: 28px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 25px;
+}
+
+.input-field label {
+  margin-bottom: 5px;
+  color: var(--ltext-color);
+  font-weight: 500;
+  font-size: 17px;
+}
+
+.input-field input {
+  width: 100%;
+  height: 50px;
+  font-size: 16px;
+  border-radius: 12px;
+  padding: 0 20px;
+  border: 2px solid var(--input-border-color);
+  margin-bottom: 0;
+  box-sizing: border-box;
+  background-color: #fafafa;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.input-field input::placeholder {
+  color: #999;
+  font-size: 14px;
+}
+
+.input-field input:focus {
+  outline: none;
+  border-color: var(--input-focus-color);
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(30, 129, 176, 0.1);
+  transform: translateY(-2px);
+}
+
+#register-button {
+  width: 100%;
+  height: 50px;
+  border-radius: 12px;
+  padding: 0 20px;
+  background: linear-gradient(
+    135deg,
+    var(--plcolor) 0%,
+    var(--button-hover-color) 100%
+  );
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 10px;
+}
+
+#register-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(30, 129, 176, 0.3);
+}
+
+#register-button:active {
+  transform: translateY(0);
+}
+
+.register-options {
+  color: var(--ltext-color);
+  text-decoration: none;
+  width: 100%;
+  margin-top: 20px;
+  font-size: 14px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.register-options a {
+  color: var(--plcolor);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.register-options a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: var(--plcolor);
+  transition: width 0.3s ease;
+}
+
+.register-options a:hover {
+  color: var(--button-hover-color);
+}
+
+.register-options a:hover::after {
+  width: 100%;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .register-section {
+    padding: 30px 20px;
+    margin: 20px;
+    max-width: 90%;
+  }
+
+  .input-field input,
+  #register-button {
+    height: 45px;
+    font-size: 14px;
+  }
+
+  #brand-name {
+    font-size: 2.5em;
+  }
+
+  .logo-section {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .register-section {
+    padding: 25px 15px;
+  }
+
+  .register-section h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  #brand-name {
+    font-size: 2em;
+  }
+}
+
+/* Animações */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.register-section {
+  animation: fadeInUp 0.6s ease-out;
+}
