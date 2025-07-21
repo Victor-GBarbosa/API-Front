@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Style -->
+    <link rel="icon" type="image/png" href="../assets/logo.png" />
+    <link rel="stylesheet" href="../styles/generics.css" />
+    <link rel="stylesheet" href="../styles/mainPage.css" />
+    <!-- Script -->
+    <script type="module" src="../js/pages/mainPage.js" defer></script>
+    <title>PlaceHolder.co - Loja</title>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="main-header">
+      <div class="header-content">
+        <div class="logo-section">
+          <img src="../assets/logo.png" alt="PlaceHolder.co" />
+          <span id="brand-name">PlaceHolder.co</span>
+        </div>
+        <nav class="nav-menu">
+          <a href="#produtos">Produtos</a>
+          <a href="#sobre">Sobre</a>
+          <a href="#contato">Contato</a>
+        </nav>
+        <div class="user-actions">
+          <button class="cart-button">
+            🛒 <span class="cart-count">0</span>
+          </button>
+          <button class="user-button" id="user-button">
+            👤 <span id="user-name">Login</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-content">
+        <h1>Bem-vindo ao PlaceHolder.co</h1>
+        <p>Encontre os melhores produtos com qualidade excepcional</p>
+        <button class="hero-button">Explorar Produtos</button>
+      </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section" id="produtos">
+      <div class="section-content">
+        <h2>Produtos em Destaque</h2>
+        <div class="products-grid" id="products-grid">
+          <!-- Produtos serão carregados dinamicamente -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+      <div class="section-content">
+        <h2>Por que escolher a PlaceHolder.co?</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🚚</div>
+            <h3>Entrega Rápida</h3>
+            <p>Entregamos em todo o Brasil com rapidez e segurança</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">💯</div>
+            <h3>Qualidade Garantida</h3>
+            <p>Produtos selecionados com os mais altos padrões de qualidade</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h3>Compra Segura</h3>
+            <p>Suas informações protegidas com máxima segurança</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>PlaceHolder.co</h4>
+          <p>Sua loja online de confiança</p>
+        </div>
+        <div class="footer-section">
+          <h4>Links Rápidos</h4>
+          <a href="#produtos">Produtos</a>
+          <a href="#sobre">Sobre Nós</a>
+          <a href="#contato">Contato</a>
+        </div>
+        <div class="footer-section">
+          <h4>Contato</h4>
+          <p>Email: contato@placeholder.co</p>
+          <p>Telefone: (11) 99999-9999</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 PlaceHolder.co. Todos os direitos reservados.</p>
+      </div>
+    </footer>
+  </body>
+</html>
