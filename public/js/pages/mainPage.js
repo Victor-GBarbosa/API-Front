@@ -32,6 +32,22 @@ const mockProducts = [
   },
 ];
 
+const userLogOutButton = document.getElementById("user-button");
+userLogOutButton.addEventListener("click", logOut);
+
 if (localStorage.getItem("token") == null) {
   window.location.href = "../index.html";
+}
+
+console.log("coisa");
+
+function logOut() {
+  localStorage.removeItem("cpf");
+  localStorage.removeItem("email");
+  localStorage.removeItem("name");
+  localStorage.removeItem("password");
+  localStorage.removeItem("phone");
+  localStorage.removeItem("token");
+
+  window.location.reload(true);
 }
