@@ -3,9 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Style -->
     <link rel="icon" type="image/png" href="./assets/logo.png" />
     <link rel="stylesheet" href="./styles/generics.css" />
     <link rel="stylesheet" href="./styles/loginpage.css" />
+    <!-- Script -->
+
+    <script type="module" src="./js/pages/login.js" defer></script>
     <title>PlaceHolder.co - Login</title>
   </head>
   <body>
@@ -36,7 +40,12 @@
           placeholder="Insira sua senha"
         />
       </div>
-      <input type="Button" value="Login" class="login-button" />
+      <input
+        type="Button"
+        value="Login"
+        class="login-button"
+        id="login-button"
+      />
       <div class="login-options">
         <a onclick="window.alert('Esse botão não funciona :)')"
           >Esqueci minha senha</a

@@ -1,7 +1,10 @@
-// import { apiUrl } from "../../../server.js";
+import { config } from "../../../config.mjs";
 
 const registerButton = document.getElementById("register-button");
 registerButton.addEventListener("click", registerSend);
+
+console.log(config.apiUrl);
+
 function register() {
   let user = {};
 
@@ -18,18 +21,15 @@ function register() {
   user.name = name.value;
   user.email = email.value;
   user.password = password.value;
-  user.phone = phone.value;
+  user.phoneNumber = phone.value;
   user.cpf = cpf.value;
-
-  console.log(JSON.stringify(user));
-
   return user;
 }
 
 async function registerSend() {
-  user = register();
+  let user = register();
 
-  const resp = await fetch("http://localhost:8080/auth/register", {
+  const resp = await fetch(config.apiUrl + "auth/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -37,7 +37,9 @@ async function registerSend() {
     body: JSON.stringify(user),
   });
 
-  console.log(user);
-
-  console.log(resp.headers);
+  if (resp.ok) {
+    window.alert("Usuario cadastrado com sucesso");
+  } else {
+    window.alert("Erro ao cadastrar o usuario");
+  }
 }
