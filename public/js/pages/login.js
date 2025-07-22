@@ -9,7 +9,6 @@ if (
   localStorage.getItem("password") != null &&
   localStorage.getItem("token") != null
 ) {
-  console.log("passou");
   window.location.href = "./pages/mainPage.html";
 }
 
@@ -63,7 +62,7 @@ async function login() {
     localStorage.setItem("name", userResponse.name);
     localStorage.setItem("email", userResponse.email);
     localStorage.setItem("password", userResponse.password);
-    localStorage.setItem("phone", userResponse.phone);
+    localStorage.setItem("phone", userResponse.phoneNumber);
     localStorage.setItem("cpf", userResponse.cpf);
     localStorage.setItem("token", userLogin.token);
     window.location.reload(true);

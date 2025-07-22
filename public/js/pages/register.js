@@ -28,6 +28,7 @@ function register() {
 
 async function registerSend() {
   let user = register();
+  console.log(JSON.stringify(user));
 
   const resp = await fetch(config.apiUrl + "auth/register", {
     method: "POST",
