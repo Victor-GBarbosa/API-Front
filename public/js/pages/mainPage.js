@@ -1,38 +1,6 @@
-import { config } from "../../../config.mjs";
+import { request, getUserRole } from "../utils/apiUtils.mjs";
 
-// Dados mockados para produtos
-const mockProducts = [
-  {
-    id: 1,
-    name: "Smartphone Premium",
-    price: "R$ 1.299,00",
-  },
-  {
-    id: 2,
-    name: "Notebook Gamer",
-    price: "R$ 2.499,00",
-  },
-  {
-    id: 3,
-    name: "Headset Bluetooth",
-    price: "R$ 199,00",
-  },
-  {
-    id: 4,
-    name: "Smart Watch",
-    price: "R$ 399,00",
-  },
-  {
-    id: 5,
-    name: "Câmera Digital",
-    price: "R$ 899,00",
-  },
-  {
-    id: 6,
-    name: "Console de Jogos",
-    price: "R$ 1.899,00",
-  },
-];
+startPage();
 
 // DOM consts
 const userLogOutButton = document.getElementById("user-button");
@@ -56,22 +24,10 @@ function logOut() {
   window.location.reload(true);
 }
 
-async function getApiProducts() {
-  const productsRequest = await fetch(config.apiUrl + `product`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  const products = await productsRequest.json();
-  return products;
-}
-
 async function renderProducts() {
   const productsGrid = document.getElementById("products-grid");
 
-  const products = await getApiProducts();
+  const products = await request("GET", "product");
 
   console.log(products);
   const productsHTML = products
@@ -92,4 +48,9 @@ async function renderProducts() {
   productsGrid.innerHTML = productsHTML;
 }
 
-renderProducts();
+async function startPage() {
+  renderProducts();
+  const userRole = await getUserRole();
+
+  console.log(userRole.authorities);
+}
