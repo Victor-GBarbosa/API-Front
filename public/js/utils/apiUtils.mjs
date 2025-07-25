@@ -31,7 +31,7 @@ async function requestWithToken(method, path, token, body) {
       method: `${method}`,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `${token}`,
+        Authorization: token,
       },
     });
   } else {
@@ -39,7 +39,7 @@ async function requestWithToken(method, path, token, body) {
       method: `${method}`,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `${token}`,
+        Authorization: token,
       },
       body: JSON.stringify(body),
     });
@@ -49,8 +49,7 @@ async function requestWithToken(method, path, token, body) {
   return response;
 }
 
-async function getUserRole() {
-  console.log(localStorage.getItem("email"), localStorage.getItem("token"));
+async function getUserInfo() {
   let request;
   try {
     if (
@@ -63,10 +62,12 @@ async function getUserRole() {
         `${localStorage.getItem("token")}`
       );
     }
-  } catch (error) {}
+  } catch (error) {
+    console.log(error)
+  }
 
   return request;
 }
 
-export { getUserRole };
+export { getUserInfo };
 export { request };

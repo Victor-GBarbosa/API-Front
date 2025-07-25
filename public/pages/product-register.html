@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Style -->
+    <link rel="icon" type="image/png" href="../assets/logo.png" />
+    <link rel="stylesheet" href="../styles/generics.css" />
+    <link rel="stylesheet" href="../styles/product-register.css" />
+    <title>PlaceHolder.co - Cadastrar Produto</title>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="main-header">
+      <div class="header-content">
+        <div class="logo-section">
+          <img src="../assets/logo.png" alt="PlaceHolder.co" />
+          <span id="brand-name">PlaceHolder.co</span>
+        </div>
+        <nav class="nav-actions">
+          <a href="./mainPage.html" class="back-button">← Voltar</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="container">
+        <h1>Cadastrar Novo Produto</h1>
+        
+        <div class="form-container">
+          <!-- Form Section -->
+          <section class="form-section">
+            <h2>Informações do Produto</h2>
+            
+            <form class="product-form" id="product-form">
+              <div class="input-group">
+                <label for="product-name">Nome do Produto</label>
+                <input 
+                  type="text" 
+                  id="product-name" 
+                  name="name" 
+                  placeholder="Ex: Samsung Galaxy S25 Ultra"
+                  required
+                />
+              </div>
+
+              <div class="input-group">
+                <label for="product-price">Preço (R$)</label>
+                <input 
+                  type="number" 
+                  id="product-price" 
+                  name="price" 
+                  placeholder="149.99"
+                  step="0.01"
+                  min="0"
+                  required
+                />
+              </div>
+
+              <div class="input-group">
+                <label for="product-description">Descrição</label>
+                <textarea 
+                  id="product-description" 
+                  name="description" 
+                  placeholder="Descreva as características e benefícios do produto..."
+                  rows="4"
+                  required
+                ></textarea>
+              </div>
+
+              <div class="input-group">
+                <label for="product-image">URL da Imagem</label>
+                <input 
+                  type="url" 
+                  id="product-image" 
+                  name="imageUrl" 
+                  placeholder="https://exemplo.com/imagem.jpg"
+                  required
+                />
+              </div>
+
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="user-id">ID do Usuário</label>
+                  <input 
+                    type="number" 
+                    id="user-id" 
+                    name="userId" 
+                    placeholder="1"
+                    min="1"
+                    required
+                  />
+                </div>
+
+                <div class="input-group">
+                  <label for="category-id">ID da Categoria</label>
+                  <input 
+                    type="number" 
+                    id="category-id" 
+                    name="categoryId" 
+                    placeholder="1"
+                    min="1"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="button-group">
+                <button type="button" class="preview-button">
+                   Visualizar Preview
+                </button>
+                <button type="submit" class="submit-button">
+                   Cadastrar Produto
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <!-- Preview Section -->
+          <section class="preview-section">
+            <h2>Preview do Produto</h2>
+            
+            <div class="preview-container">
+              <div class="product-card-preview">
+                <div class="product-image-preview">
+                  <img id="preview-image" />
+                </div>
+                <h3 class="product-title-preview" id="preview-title">Nome do Produto</h3>
+                <p class="product-price-preview" id="preview-price">R$ 0,00</p>
+                <button class="product-button-preview" disabled>
+                  Adicionar ao Carrinho
+                </button>
+              </div>
+              
+              <div class="preview-info">
+                <h4>Como ficará na loja:</h4>
+                <p class="preview-description" id="preview-description">
+                  A descrição do produto aparecerá aqui...
+                </p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- Success Modal (Hidden by default) -->
+    <div class="modal-overlay" id="success-modal" style="display: none;">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>✅ Produto Cadastrado!</h3>
+        </div>
+        <div class="modal-body">
+          <p>O produto foi cadastrado com sucesso na loja.</p>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-button" onclick="window.location.href='./mainPage.html'">
+            Voltar à Loja
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

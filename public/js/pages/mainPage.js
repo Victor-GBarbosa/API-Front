@@ -1,4 +1,4 @@
-import { request, getUserRole } from "../utils/apiUtils.mjs";
+import { request, getUserInfo } from "../utils/apiUtils.mjs";
 
 startPage();
 
@@ -29,7 +29,6 @@ async function renderProducts() {
 
   const products = await request("GET", "product");
 
-  console.log(products);
   const productsHTML = products
     .map(
       (product) => `
@@ -48,9 +47,42 @@ async function renderProducts() {
   productsGrid.innerHTML = productsHTML;
 }
 
+async function renderUserActions () {
+  const actionsHeader = document.getElementById("user-actions")
+  const userInfo = await getUserInfo();
+  if (userInfo.authorities.length > 1) {
+    
+    const newButton = document.createElement("button")
+    newButton.classList.add("user-button");
+    newButton.setAttribute("onclick", "() => window.location.href = './product-register'")
+    newButton.onclick = () => window.location.href = './product-register.html'
+
+    const spam = document.createElement("span");
+    spam.innerText = "Registrar produto";
+
+    newButton.appendChild(spam)
+    actionsHeader.appendChild(newButton);
+    if (userInfo.authorities.length > 2) {
+
+      if (userInfo.authorities.length >3) {
+        const newButton = document.createElement("button")
+    newButton.classList.add("user-button");
+    newButton.setAttribute("onclick", "")
+    
+    const spam = document.createElement("span");
+    spam.innerText = "usuarios";
+
+    newButton.appendChild(spam)
+    actionsHeader.appendChild(newButton);
+      }
+    }
+  }
+}
+
 async function startPage() {
   renderProducts();
-  const userRole = await getUserRole();
+  renderUserActions();
+  const userInfo = await getUserInfo();
+  console.log(userInfo.authorities)
 
-  console.log(userRole.authorities);
 }
