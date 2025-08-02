@@ -59,11 +59,10 @@ async function login() {
 
     let userResponse = await userRequest.json();
 
-    localStorage.setItem("name", userResponse.name);
-    localStorage.setItem("email", userResponse.email);
+    localStorage.setItem("userDetails", JSON.stringify(userResponse))
+
     localStorage.setItem("password", userResponse.password);
-    localStorage.setItem("phone", userResponse.phoneNumber);
-    localStorage.setItem("cpf", userResponse.cpf);
+    localStorage.setItem("email", userResponse.email);
     localStorage.setItem("token", userLogin.token);
     window.location.reload(true);
   }

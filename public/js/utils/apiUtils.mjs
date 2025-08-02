@@ -71,3 +71,4 @@ async function getUserInfo() {
 
 export { getUserInfo };
 export { request };
+export { requestWithToken}

@@ -35,8 +35,8 @@ async function renderProducts() {
     <div class="product-card">
       <div class="product-image"><img src="${product.imageUrl}"></div>
       <h3 class="product-title">${product.name}</h3>
-      <p class="product-price">${product.price}</p>
-      <button class="product-button" onclick="addToCart(${product.id})">
+      <p class="product-price">R$${product.price}</p>
+      <button class="product-button" onclick="addToCart(${parseFloat(product.id)})">
         Adicionar ao Carrinho
       </button>
     </div>

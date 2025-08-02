@@ -7,6 +7,9 @@
     <link rel="icon" type="image/png" href="../assets/logo.png" />
     <link rel="stylesheet" href="../styles/generics.css" />
     <link rel="stylesheet" href="../styles/product-register.css" />
+    <!-- Scrtipts -->
+     <script defer type="module" src="../js/pages/registerProducts.js"></script>
+     <!-- Title -->
     <title>PlaceHolder.co - Cadastrar Produto</title>
   </head>
   <body>
@@ -51,7 +54,7 @@
                   type="number" 
                   id="product-price" 
                   name="price" 
-                  placeholder="149.99"
+                  placeholder="0.00"
                   step="0.01"
                   min="0"
                   required
@@ -110,7 +113,7 @@
                 <button type="button" class="preview-button">
                    Visualizar Preview
                 </button>
-                <button type="submit" class="submit-button">
+                <button type="submit" class="submit-button" id="productRegister-button">
                    Cadastrar Produto
                 </button>
               </div>
