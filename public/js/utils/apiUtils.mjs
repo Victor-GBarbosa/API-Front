@@ -1,9 +1,8 @@
-import { config } from "../../../config.mjs";
+import { config } from "../../config.mjs";
 
 async function request(method, path, body) {
   let request = null;
-  if ((method == "GET")) {
-    
+  if (method == "GET") {
     request = await fetch(config.apiUrl + path, {
       method: method,
       headers: {
@@ -63,7 +62,7 @@ async function getUserInfo() {
       );
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 
   return request;
@@ -71,4 +70,4 @@ async function getUserInfo() {
 
 export { getUserInfo };
 export { request };
-export { requestWithToken}
+export { requestWithToken };
