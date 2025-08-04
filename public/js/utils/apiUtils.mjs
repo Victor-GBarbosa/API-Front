@@ -2,23 +2,23 @@ import { config } from "../../../config.mjs";
 
 async function request(method, path, body) {
   let request = null;
-  if ((method = "GET" || body != undefined)) {
-    request = await fetch(config.apiUrl + `${path}`, {
-      method: `${method}`,
+  if ((method == "GET")) {
+    
+    request = await fetch(config.apiUrl + path, {
+      method: method,
       headers: {
         "Content-Type": "application/json",
       },
     });
   } else {
-    request = await fetch(config.apiUrl + `${path}`, {
-      method: `${method}`,
+    request = await fetch(config.apiUrl + path, {
+      method: method,
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
     });
   }
-
   const response = await request.json();
   return response;
 }
@@ -27,16 +27,16 @@ async function requestWithToken(method, path, token, body) {
   let request;
 
   if (method == "GET" || body != undefined) {
-    request = await fetch(config.apiUrl + `${path}`, {
-      method: `${method}`,
+    request = await fetch(config.apiUrl + path, {
+      method: method,
       headers: {
         "Content-Type": "application/json",
         Authorization: token,
       },
     });
   } else {
-    request = await fetch(config.apiUrl + `${path}`, {
-      method: `${method}`,
+    request = await fetch(config.apiUrl + path, {
+      method: method,
       headers: {
         "Content-Type": "application/json",
         Authorization: token,
