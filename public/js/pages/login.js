@@ -1,4 +1,4 @@
-import { config } from "../../config.mjs";
+import { config } from "../../../config.mjs";
 
 let userLoginInfo;
 
@@ -59,7 +59,7 @@ async function login() {
 
     let userResponse = await userRequest.json();
 
-    localStorage.setItem("userDetails", JSON.stringify(userResponse));
+    localStorage.setItem("userDetails", JSON.stringify(userResponse))
 
     localStorage.setItem("password", userResponse.password);
     localStorage.setItem("email", userResponse.email);
