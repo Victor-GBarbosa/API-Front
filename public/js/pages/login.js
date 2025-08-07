@@ -1,4 +1,5 @@
-import { config } from "../../../config.mjs";
+import { config } from "../../config.mjs";
+import { request, requestWithToken } from "../utils/apiUtils.mjs";
 
 let userLoginInfo;
 
@@ -12,8 +13,41 @@ if (
   window.location.href = "./pages/mainPage.html";
 }
 
-const loginBtn = document.getElementById("login-button");
-loginBtn.addEventListener("click", login);
+// Form submit
+
+const form = document.getElementById("login-form");
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const userLogin = getLoginValues();
+
+  let resp = await request("POST", "auth/login", userLogin);
+
+  console.log(resp);
+
+  if (resp[1].status === 401) {
+    console.log("Erro " + resp[1].status + " :credenciais invalidas");
+    return;
+  } else if (resp[1].status === 200) {
+    console.log("200");
+    const response = resp[0];
+    userLogin.token = response.token;
+    console.log(userLogin.token);
+    const userRequest = await requestWithToken(
+      "GET",
+      `users/email/${userLogin.login}`,
+      userLogin.token
+    );
+
+    const userResponse = userRequest[0];
+
+    localStorage.setItem("userDetails", JSON.stringify(userResponse));
+
+    localStorage.setItem("password", userResponse.password);
+    localStorage.setItem("email", userResponse.email);
+    localStorage.setItem("token", userLogin.token);
+    window.location.reload(true);
+  }
+});
 
 function getLoginValues() {
   let email = document.getElementById("email-input");
@@ -25,45 +59,4 @@ function getLoginValues() {
   };
 
   return userLogin;
-}
-
-async function login() {
-  const userLogin = getLoginValues();
-
-  let resp = await fetch(config.apiUrl + "auth/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(userLogin),
-  });
-
-  const response = await resp.json();
-  userLoginInfo = userLogin;
-  userLoginInfo.token = response.token;
-
-  if (resp.status === 401) {
-    console.log("credenciais invalidas");
-    return;
-  } else if (resp.status === 200) {
-    const userRequest = await fetch(
-      config.apiUrl + `users/email/${userLogin.login}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${userLogin.token}`,
-        },
-      }
-    );
-
-    let userResponse = await userRequest.json();
-
-    localStorage.setItem("userDetails", JSON.stringify(userResponse))
-
-    localStorage.setItem("password", userResponse.password);
-    localStorage.setItem("email", userResponse.email);
-    localStorage.setItem("token", userLogin.token);
-    window.location.reload(true);
-  }
 }

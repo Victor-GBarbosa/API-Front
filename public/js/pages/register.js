@@ -1,4 +1,4 @@
-import { config } from "../../../config.mjs";
+import { config } from "../../config.mjs";
 
 const registerButton = document.getElementById("register-button");
 registerButton.addEventListener("click", registerSend);

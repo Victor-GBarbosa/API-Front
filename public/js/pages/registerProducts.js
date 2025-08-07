@@ -15,7 +15,9 @@ console.log(registerProductButton);
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  if (form.checkValidity()) {
+  let isSubmited = false;
+
+  if (form.checkValidity() && isSubmited == false) {
     let product = {
       user: {},
       category: {},
@@ -30,6 +32,10 @@ form.addEventListener("submit", async (e) => {
     let response1 = await request("POST", "product", product);
     console.log(JSON.stringify(product));
     console.log(response1);
+    isSubmited = true;
+    // window.location.reload(true);
+  } else {
+    isSubmited = false;
   }
 });
 
