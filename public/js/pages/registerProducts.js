@@ -1,4 +1,8 @@
-import { request, requestWithToken } from "../utils/apiUtils.mjs";
+import {
+  request,
+  requestWithToken,
+  showNotification,
+} from "../utils/apiUtils.mjs";
 
 const productNameInput = document.getElementById("product-name");
 const productPriceInput = document.getElementById("product-price");
@@ -10,11 +14,11 @@ const userDetails = JSON.parse(localStorage.getItem("userDetails"));
 
 const form = document.getElementById("product-form");
 const registerProductButton = document.getElementById("productRegister-button");
-console.log(registerProductButton);
 
+//Logica de envio do registro de produtos
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
-
+  console.log("coisado");
   let isSubmited = false;
 
   if (form.checkValidity() && isSubmited == false) {
@@ -28,14 +32,45 @@ form.addEventListener("submit", async (e) => {
     product.imageUrl = productImageUrlInput.value;
     product.user.id = userDetails.id;
     product.category.id = parseInt(categoryIdSelect.value);
+    let productRequest;
 
-    let response1 = await request("POST", "product", product);
-    console.log(JSON.stringify(product));
-    console.log(response1);
-    isSubmited = true;
-    // window.location.reload(true);
-  } else {
-    isSubmited = false;
+    productRequest = await requestWithToken(
+      "POST",
+      "product",
+      localStorage.getItem("token"),
+      product
+    );
+
+    if (productRequest[1].status == 200 || productRequest[1].status == 201) {
+      isSubmited = true;
+      // window.location.reload(true);
+      // form.removeEventListener("submit");
+      showNotification("SUCCESS", "Produto adicionado com sucesso");
+    } else if (
+      productRequest[1].status == 500 ||
+      productRequest[1].status == 403
+    ) {
+      if (productRequest[1].status == 500) {
+        showNotification(
+          "ERROR",
+          "Erro ao tentar registrar o produto, tente novamente mais tarde"
+        );
+        isSubmited = false;
+      }
+      if (productRequest[1].status == 403) {
+        showNotification(
+          "ERROR",
+          "Voce não tem permição para registrar um produto"
+        );
+        isSubmited = false;
+      }
+    } else {
+      isSubmited = false;
+      showNotification(
+        "WARNING",
+        `${productRequest[1].status}: Erro ao registrar o propduto`
+      );
+    }
   }
 });
 
@@ -53,29 +88,22 @@ function dynamicInput() {
   productImageUrlInput.addEventListener("input", () => {
     productImageUrlPreview.setAttribute("src", productImageUrlInput.value);
   });
-
-  let userDetails = JSON.parse(localStorage.getItem("userDetails"));
 }
 
 async function loadCategories() {
   let categories = await request("GET", "category");
-  console.log(categories);
-  return categories;
+  return categories[0];
 }
 
 async function renderCategories() {
   const categories = await loadCategories();
   const categorySelector = document.getElementById("category-id");
-  console.log(categorySelector);
-  console.log();
-  console.log("a");
+
   let i;
   for (i = 0; i < categories.length; i++) {
-    console.log("ola");
     let newOption = document.createElement("option");
     newOption.setAttribute("value", categories[i].id);
     newOption.innerText = categories[i].name;
-    console.log(newOption);
     categorySelector.appendChild(newOption);
   }
 }

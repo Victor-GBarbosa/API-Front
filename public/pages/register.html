@@ -15,31 +15,67 @@
   <body>
     <section class="register-section">
       <h2>Registrar</h2>
-      <div class="input-field">
-        <label for="name-input">Nome</label>
-        <input type="text" placeholder="Insira seu nome" id="name-input" />
-      </div>
-      <div class="input-field">
-        <label for="email-input">Email</label>
-        <input type="email" placeholder="Insira seu email" id="email-input" />
-      </div>
-      <div class="input-field">
-        <label for="password-input">Senha</label>
-        <input
-          type="password"
-          placeholder="digite suea senha"
-          id="password-input"
-        />
-      </div>
-      <div class="input-field">
-        <label for="phone-input">Telefone</label>
-        <input type="text" placeholder="(XX) XXXXX-XXXX" id="phone-input" />
-      </div>
-      <div class="input-field">
-        <label for="cpf-input">CPF</label>
-        <input type="text" placeholder="Insira seu CPF" id="cpf-input" />
-      </div>
-      <input type="button" value="registrar-se" id="register-button" />
+      <form id="register-form">
+        <div class="input-field">
+          <label for="name-input">Nome</label>
+          <input
+            type="text"
+            name="name"
+            placeholder="Insira seu nome"
+            id="name-input"
+            required
+          />
+        </div>
+        <div class="input-field">
+          <label for="email-input">Email</label>
+          <input
+            type="email"
+            name="email"
+            placeholder="Insira seu email"
+            id="email-input"
+            required
+          />
+        </div>
+        <div class="input-field">
+          <label for="password-input">Senha</label>
+          <input
+            type="password"
+            name="password"
+            placeholder="Digite sua senha"
+            id="password-input"
+            required
+          />
+        </div>
+        <div class="input-field">
+          <label for="phone-input">Telefone</label>
+          <input
+            type="tel"
+            name="phone"
+            placeholder="(XX) XXXXX-XXXX"
+            id="phone-input"
+            required
+          />
+        </div>
+        <div class="input-field">
+          <label for="cpf-input">CPF</label>
+          <input
+            type="text"
+            name="cpf"
+            placeholder="Insira seu CPF"
+            id="cpf-input"
+            required
+          />
+        </div>
+
+        <div class="button-group">
+          <button type="button" class="cancel-button" id="cancel-button">
+            Cancelar
+          </button>
+          <button type="submit" class="register-button" id="register-button">
+            Registrar-se
+          </button>
+        </div>
+      </form>
     </section>
   </body>
 </html>

@@ -1,5 +1,9 @@
 import { config } from "../../config.mjs";
-import { request, requestWithToken } from "../utils/apiUtils.mjs";
+import {
+  request,
+  requestWithToken,
+  showNotification,
+} from "../utils/apiUtils.mjs";
 
 let userLoginInfo;
 
@@ -25,10 +29,9 @@ form.addEventListener("submit", async (e) => {
   console.log(resp);
 
   if (resp[1].status === 401) {
-    console.log("Erro " + resp[1].status + " :credenciais invalidas");
+    showNotification("WARNING", "Credenciais invalidas");
     return;
   } else if (resp[1].status === 200) {
-    console.log("200");
     const response = resp[0];
     userLogin.token = response.token;
     console.log(userLogin.token);

@@ -1,4 +1,4 @@
-import { request, getUserInfo } from "../utils/apiUtils.mjs";
+import { request, showNotification } from "../utils/apiUtils.mjs";
 
 if (localStorage.getItem("userDetails") != null) {
   var userDetails = JSON.parse(localStorage.getItem("userDetails"));
@@ -28,10 +28,10 @@ async function renderProducts() {
   const productsGrid = document.getElementById("products-grid");
 
   const products = await request("GET", "product");
-
-  const productsHTML = products
-    .map(
-      (product) => `
+  if (products[1].status == 200) {
+    const productsHTML = products[0]
+      .map(
+        (product) => `
     <div class="product-card">
       <div class="product-image"><img src="${product.imageUrl}"></div>
       <h3 class="product-title">${product.name}</h3>
@@ -43,10 +43,15 @@ async function renderProducts() {
       </button>
     </div>
   `
-    )
-    .join("");
-
-  productsGrid.innerHTML = productsHTML;
+      )
+      .join("");
+    productsGrid.innerHTML = productsHTML;
+  } else {
+    showNotification(
+      "ERROR",
+      products[1].status + ": Não foi possivel carregar os produtos"
+    );
+  }
 }
 
 async function renderUserActions() {
