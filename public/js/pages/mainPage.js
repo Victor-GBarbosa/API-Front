@@ -8,12 +8,112 @@ if (localStorage.getItem("userDetails") != null) {
 
 startPage();
 
+// User Dropdown
+const dropdownToggle = document.getElementById("user-dropdown-toggle");
+const dropdownMenu = document.getElementById("user-dropdown-menu");
+
+if (dropdownToggle && dropdownMenu) {
+  dropdownToggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdownToggle.classList.toggle("active");
+    dropdownMenu.classList.toggle("show");
+  });
+
+  document.addEventListener("click", (e) => {
+    if (
+      !dropdownToggle.contains(e.target) &&
+      !dropdownMenu.contains(e.target)
+    ) {
+      dropdownToggle.classList.remove("active");
+      dropdownMenu.classList.remove("show");
+    }
+  });
+}
+
 // DOM consts
 const userLogOutButton = document.getElementById("user-button");
 userLogOutButton.addEventListener("click", logOut);
 
 const welcomeMessage = document.getElementById("welcome-message");
 welcomeMessage.innerText = `Bem vindo, ${userDetails.name}`;
+
+// Navigation event listeners for dropdown items
+const registerProductButton = document.getElementById(
+  "register-product-button"
+);
+const cartButton = document.getElementById("cart-button");
+const manageUsersButton = document.getElementById("manage-users-button");
+const profileButton = document.getElementById("profile-button");
+const ordersButton = document.getElementById("orders-button");
+const myProductsButton = document.getElementById("my-products-button");
+const settingsButton = document.getElementById("settings-button");
+const adminReportsButton = document.getElementById("admin-reports-button");
+
+if (registerProductButton) {
+  registerProductButton.addEventListener("click", () => {
+    window.location.href = "./product-register.html";
+  });
+}
+
+if (cartButton) {
+  cartButton.addEventListener("click", () => {
+    showNotification(
+      "INFO",
+      "Funcionalidade do carrinho será implementada em breve"
+    );
+  });
+}
+
+if (manageUsersButton) {
+  manageUsersButton.addEventListener("click", () => {
+    window.location.href = "./users.html";
+  });
+}
+
+if (profileButton) {
+  profileButton.addEventListener("click", () => {
+    showNotification(
+      "INFO",
+      "Funcionalidade de perfil será implementada em breve"
+    );
+  });
+}
+
+if (ordersButton) {
+  ordersButton.addEventListener("click", () => {
+    showNotification(
+      "INFO",
+      "Funcionalidade de pedidos será implementada em breve"
+    );
+  });
+}
+
+if (myProductsButton) {
+  myProductsButton.addEventListener("click", () => {
+    showNotification(
+      "INFO",
+      "Funcionalidade de meus produtos será implementada em breve"
+    );
+  });
+}
+
+if (settingsButton) {
+  settingsButton.addEventListener("click", () => {
+    showNotification(
+      "INFO",
+      "Funcionalidade de configurações será implementada em breve"
+    );
+  });
+}
+
+if (adminReportsButton) {
+  adminReportsButton.addEventListener("click", () => {
+    showNotification(
+      "INFO",
+      "Funcionalidade de relatórios será implementada em breve"
+    );
+  });
+}
 
 function logOut() {
   localStorage.removeItem("email");
@@ -55,36 +155,27 @@ async function renderProducts() {
 }
 
 async function renderUserActions() {
+  console.log(userDetails.authorities.length);
   const actionsHeader = document.getElementById("user-actions");
   const userInfo = JSON.parse(localStorage.getItem("userDetails"));
-  if (userInfo.authorities.length > 1) {
-    const newButton = document.createElement("button");
-    newButton.classList.add("user-button");
-    newButton.setAttribute(
-      "onclick",
-      "() => window.location.href = './product-register'"
+
+  // Verficação de roles
+  const adminSections = document.querySelectorAll(".admin-section");
+  const adminItems = document.querySelectorAll(".admin-item");
+
+  if (userInfo.authorities.length > 3) {
+    adminSections.forEach((section) => (section.style.display = "block"));
+    adminItems.forEach((item) => (item.style.display = "flex"));
+  } else {
+    adminSections.forEach((section) => (section.style.display = "none"));
+    adminItems.forEach((item) => (item.style.display = "none"));
+  }
+
+  if (userInfo.authorities.length < 2) {
+    const sellerDropdownSection = document.getElementById(
+      "seller-dropdown-section"
     );
-    newButton.onclick = () =>
-      (window.location.href = "./product-register.html");
-
-    const spam = document.createElement("span");
-    spam.innerText = "Registrar produto";
-
-    newButton.appendChild(spam);
-    actionsHeader.appendChild(newButton);
-    if (userInfo.authorities.length > 2) {
-      if (userInfo.authorities.length > 3) {
-        const newButton = document.createElement("button");
-        newButton.classList.add("user-button");
-        newButton.setAttribute("onclick", "");
-
-        const spam = document.createElement("span");
-        spam.innerText = "usuarios";
-
-        newButton.appendChild(spam);
-        actionsHeader.appendChild(newButton);
-      }
-    }
+    sellerDropdownSection.style.display = "none";
   }
 }
 

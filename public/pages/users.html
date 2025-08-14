@@ -6,10 +6,10 @@
     <!-- Style -->
     <link rel="icon" type="image/png" href="../assets/logo.png" />
     <link rel="stylesheet" href="../styles/generics.css" />
-    <link rel="stylesheet" href="../styles/mainPage.css" />
+    <link rel="stylesheet" href="../styles/users.css" />
     <!-- Script -->
-    <script type="module" src="../js/pages/mainPage.js" defer></script>
-    <title>PlaceHolder.co - Loja</title>
+    <script type="module" src="../js/pages/users.js" defer></script>
+    <title>PlaceHolder.co - Gerenciar Usuários</title>
   </head>
   <body>
     <!-- Header -->
@@ -20,24 +20,22 @@
           <span id="brand-name">PlaceHolder.co</span>
         </div>
         <nav class="nav-menu">
-          <a href="#produtos">Produtos</a>
-          <a href="#sobre">Sobre</a>
-          <a href="#contato">Contato</a>
+          <a href="./mainPage.html">Voltar à Loja</a>
+          <a href="#usuarios">Usuários</a>
+          <a href="#relatorios">Relatórios</a>
         </nav>
         <div class="user-actions" id="user-actions">
           <div class="user-dropdown">
             <button class="user-dropdown-toggle" id="user-dropdown-toggle">
-              👤 <span id="user-name">Usuário</span>
+              👤 <span id="user-name">Admin</span>
               <span class="dropdown-arrow">▼</span>
             </button>
             <div class="user-dropdown-menu" id="user-dropdown-menu">
               <div class="dropdown-header">
                 <div class="user-avatar">👤</div>
                 <div class="user-info">
-                  <span class="user-display-name" id="welcome-message"
-                    >Bem-vindo</span
-                  >
-                  <span class="user-email"></span>
+                  <span class="user-display-name">Bem-vindo, Admin</span>
+                  <span class="user-email">admin@placeholder.co</span>
                 </div>
               </div>
 
@@ -57,6 +55,7 @@
 
               <!-- Seção de Vendedor/Produto -->
               <div id="seller-dropdown-section">
+                <div class="dropdown-divider"></div>
                 <div class="dropdown-section-header">Produtos</div>
                 <button class="dropdown-item" id="register-product-button">
                   ➕ Registrar Produto
@@ -67,7 +66,7 @@
               </div>
 
               <!-- Seção Administrativa (só para admins) -->
-
+              <div class="dropdown-divider admin-section"></div>
               <div class="dropdown-section-header admin-section">
                 Administração
               </div>
@@ -91,44 +90,67 @@
       </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero-section">
-      <div class="hero-content">
-        <h1 id="welcome-message">Bem-vindo ao PlaceHolder.co</h1>
-        <p>Encontre os melhores produtos com qualidade excepcional</p>
-        <button class="hero-button">Explorar Produtos</button>
+    <!-- Page Title Section -->
+    <section class="page-title-section">
+      <div class="page-content">
+        <h1>👥 Gerenciar Usuários</h1>
+        <p>Administre usuários e suas permissões no sistema</p>
       </div>
     </section>
-
-    <!-- Products Section -->
-    <section class="products-section" id="produtos">
-      <div class="section-content">
-        <h2>Produtos em Destaque</h2>
-        <div class="products-grid" id="products-grid">
-          <!-- Produtos serão carregados dinamicamente -->
+    <!-- Users Management Section -->
+    <section class="users-section">
+      <div class="users-content">
+        <div class="section-header">
+          <h2>Lista de Usuários</h2>
+          <div class="users-stats">
+            <span class="stat-item">📊 Total: <strong>0 usuários</strong></span>
+            <span class="stat-item">🔴 Admins: <strong>0</strong></span>
+            <span class="stat-item">🔵 Moderadores: <strong>0</strong></span>
+            <span class="stat-item">🟡 Vendedores: <strong>0</strong></span>
+            <span class="stat-item">🟢 Clientes: <strong>0</strong></span>
+          </div>
         </div>
-      </div>
-    </section>
+        <!-- Administradores Section -->
+        <div class="user-category-section">
+          <div class="category-header admin-category">
+            <h3>🔴 Administradores</h3>
+            <span class="category-count">0 usuários</span>
+          </div>
+          <div class="users-grid admin-users" id="admin-users">
+            <!-- Admin users will be loaded here dynamically -->
+          </div>
+        </div>
 
-    <!-- Features Section -->
-    <section class="features-section">
-      <div class="section-content">
-        <h2>Por que escolher a PlaceHolder.co?</h2>
-        <div class="features-grid">
-          <div class="feature-card">
-            <div class="feature-icon">🚚</div>
-            <h3>Entrega Rápida</h3>
-            <p>Entregamos em todo o Brasil com rapidez e segurança</p>
+        <!-- Moderadores Section -->
+        <div class="user-category-section">
+          <div class="category-header moderator-category">
+            <h3>🔵 Moderadores</h3>
+            <span class="category-count">0 usuários</span>
           </div>
-          <div class="feature-card">
-            <div class="feature-icon">💯</div>
-            <h3>Qualidade Garantida</h3>
-            <p>Produtos selecionados com os mais altos padrões de qualidade</p>
+          <div class="users-grid moderator-users" id="moderator-users">
+            <!-- Moderator users will be loaded here dynamically -->
           </div>
-          <div class="feature-card">
-            <div class="feature-icon">🔒</div>
-            <h3>Compra Segura</h3>
-            <p>Suas informações protegidas com máxima segurança</p>
+        </div>
+
+        <!-- Vendedores Section -->
+        <div class="user-category-section">
+          <div class="category-header seller-category">
+            <h3>🟡 Vendedores</h3>
+            <span class="category-count">0 usuários</span>
+          </div>
+          <div class="users-grid seller-users" id="seller-users">
+            <!-- Seller users will be loaded here dynamically -->
+          </div>
+        </div>
+
+        <!-- Clientes Section -->
+        <div class="user-category-section">
+          <div class="category-header customer-category">
+            <h3>🟢 Clientes</h3>
+            <span class="category-count">0 usuários</span>
+          </div>
+          <div class="users-grid customer-users" id="customer-users">
+            <!-- Customer users will be loaded here dynamically -->
           </div>
         </div>
       </div>
@@ -139,17 +161,17 @@
       <div class="footer-content">
         <div class="footer-section">
           <h4>PlaceHolder.co</h4>
-          <p>Sua loja online de confiança</p>
+          <p>Painel Administrativo</p>
         </div>
         <div class="footer-section">
-          <h4>Links Rápidos</h4>
-          <a href="#produtos">Produtos</a>
-          <a href="#sobre">Sobre Nós</a>
-          <a href="#contato">Contato</a>
+          <h4>Administração</h4>
+          <a href="#usuarios">Gerenciar Usuários</a>
+          <a href="#produtos">Gerenciar Produtos</a>
+          <a href="#relatorios">Relatórios</a>
         </div>
         <div class="footer-section">
-          <h4>Contato</h4>
-          <p>Email: contato@placeholder.co</p>
+          <h4>Suporte</h4>
+          <p>Email: admin@placeholder.co</p>
           <p>Telefone: (11) 99999-9999</p>
         </div>
       </div>

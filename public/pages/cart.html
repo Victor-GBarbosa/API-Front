@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Style -->
+    <link rel="icon" type="image/png" href="../assets/logo.png" />
+    <link rel="stylesheet" href="../styles/generics.css" />
+    <link rel="stylesheet" href="../styles/cart.css" />
+    <!-- Script -->
+    <script type="module" src="../js/pages/cart.js" defer></script>
+    <title>PlaceHolder.co - Carrinho</title>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="main-header">
+      <div class="header-content">
+        <div class="logo-section">
+          <img src="../assets/logo-black.png" alt="PlaceHolder.co" />
+          <span id="brand-name">PlaceHolder.co</span>
+        </div>
+        <nav class="nav-menu">
+          <a href="./mainPage.html">← Voltar à Loja</a>
+        </nav>
+        <div class="user-actions">
+          <button class="user-button" id="logout-button">🚪 Sair</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Cart Section -->
+    <section class="cart-section">
+      <div class="container">
+        <div class="cart-header">
+          <h1>🛒 Meu Carrinho</h1>
+          <p>Revise seus itens antes de finalizar a compra</p>
+        </div>
+
+        <!-- Cart Content -->
+        <div class="cart-content">
+          <!-- Cart Items -->
+          <div class="cart-items">
+            <div class="cart-items-header">
+              <h2>Itens no Carrinho (<span id="cart-count">0</span>)</h2>
+              <button class="clear-cart-btn" id="clear-cart">
+                Limpar Carrinho
+              </button>
+            </div>
+
+            <div class="cart-items-list" id="cart-items-list">
+              <!-- Cart items will be dynamically loaded here -->
+              <div class="empty-cart" id="empty-cart">
+                <div class="empty-cart-icon">🛒</div>
+                <h3>Seu carrinho está vazio</h3>
+                <p>Adicione alguns produtos incríveis para começar!</p>
+                <a href="./mainPage.html" class="continue-shopping-btn"
+                  >Continuar Comprando</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Cart Summary -->
+          <div class="cart-summary">
+            <h2>Resumo do Pedido</h2>
+
+            <div class="summary-item">
+              <span>Subtotal:</span>
+              <span id="subtotal">R$ 0,00</span>
+            </div>
+
+            <div class="summary-item">
+              <span>Frete:</span>
+              <span id="shipping">R$ 15,00</span>
+            </div>
+
+            <div class="summary-divider"></div>
+
+            <div class="summary-total">
+              <span>Total:</span>
+              <span id="total">R$ 15,00</span>
+            </div>
+
+            <div class="checkout-actions">
+              <button class="checkout-btn" id="checkout-btn" disabled>
+                Finalizar Compra
+              </button>
+              <a href="./mainPage.html" class="continue-shopping">
+                Continuar Comprando
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

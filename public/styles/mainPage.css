@@ -129,6 +129,197 @@ body {
   font-size: 0.8rem;
 }
 
+/* User Dropdown Styles */
+.user-dropdown {
+  position: relative;
+}
+
+.user-dropdown-toggle {
+  background: rgba(30, 129, 176, 0.1);
+  border: 2px solid var(--plcolor);
+  padding: 0.6rem 1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: var(--plcolor);
+  transition: all 0.3s ease;
+}
+
+.user-dropdown-toggle:hover {
+  background: var(--plcolor);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(30, 129, 176, 0.3);
+}
+
+.dropdown-arrow {
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+.user-dropdown-toggle.active .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.user-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: white;
+  min-width: 280px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.user-dropdown-menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-header {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: linear-gradient(
+    135deg,
+    var(--plcolor),
+    var(--button-hover-color)
+  );
+  color: white;
+  border-radius: 12px 12px 0 0;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-display-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.user-email {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: #eee;
+  margin: 0.5rem 0;
+}
+
+.dropdown-item {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.dropdown-item:hover {
+  background: rgba(30, 129, 176, 0.1);
+}
+
+.logout-item {
+  color: var(--error-color);
+}
+
+.logout-item:hover {
+  background: rgba(231, 76, 60, 0.1);
+}
+
+/* Seções do Dropdown */
+.dropdown-section-header {
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(30, 129, 176, 0.05);
+  border-left: 3px solid var(--plcolor);
+}
+
+/* Itens Administrativos */
+.admin-item {
+  background: linear-gradient(
+    90deg,
+    rgba(231, 76, 60, 0.05) 0%,
+    transparent 100%
+  );
+  border-left: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.admin-item:hover {
+  background: linear-gradient(
+    90deg,
+    rgba(231, 76, 60, 0.1) 0%,
+    transparent 100%
+  );
+  border-left-color: var(--error-color);
+  color: var(--error-color);
+}
+
+/* Seção Admin - inicialmente oculta */
+.admin-section {
+  display: none;
+}
+
+.admin-section.show {
+  display: block;
+}
+
+/* Indicadores visuais para diferentes tipos de ação */
+.dropdown-item[id*="cart"] {
+  border-left: 3px solid transparent;
+}
+
+.dropdown-item[id*="cart"]:hover {
+  border-left-color: #27ae60;
+  background: rgba(39, 174, 96, 0.1);
+  color: #27ae60;
+}
+
+.dropdown-item[id*="product"] {
+  border-left: 3px solid transparent;
+}
+
+.dropdown-item[id*="product"]:hover {
+  border-left-color: #f39c12;
+  background: rgba(243, 156, 18, 0.1);
+  color: #f39c12;
+}
+
 /* Hero Section */
 .hero-section {
   margin-top: 80px;
@@ -416,6 +607,33 @@ body {
     grid-template-columns: 1fr;
     text-align: center;
   }
+
+  /* Dropdown Responsividade */
+  .user-dropdown-menu {
+    min-width: 260px;
+    right: -10px;
+  }
+
+  .cart-button,
+  .user-dropdown-toggle {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .dropdown-header {
+    padding: 0.8rem;
+  }
+
+  .user-avatar {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+
+  .dropdown-item {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.85rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -437,4 +655,64 @@ body {
     padding: 0.4rem 0.8rem;
     font-size: 0.9rem;
   }
+
+  .user-dropdown-menu {
+    min-width: 240px;
+    right: -20px;
+  }
+
+  .user-actions {
+    gap: 0.3rem;
+  }
+
+  .cart-button,
+  .user-dropdown-toggle {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .dropdown-arrow {
+    font-size: 0.6rem;
+  }
+}
+
+/* Estilos para seção administrativa */
+.admin-section,
+.admin-item {
+  display: none; /* Ocultos por padrão */
+}
+
+/* Quando a seção administrativa é visível */
+.admin-section.visible,
+.admin-item.visible {
+  display: block;
+}
+
+.admin-item.visible {
+  display: flex;
+}
+
+/* Estilo especial para itens administrativos */
+.admin-item {
+  color: #e74c3c;
+  font-weight: 500;
+}
+
+.admin-item:hover {
+  background: linear-gradient(45deg, #e74c3c, #c0392b);
+  color: white;
+}
+
+/* Cabeçalho da seção administrativa */
+.dropdown-section-header {
+  color: #666;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Seção administrativa específica */
+.admin-section .dropdown-section-header {
+  color: #e74c3c;
 }
