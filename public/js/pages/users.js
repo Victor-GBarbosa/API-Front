@@ -1,4 +1,9 @@
-import { requestWithToken, showNotification } from "../utils/apiUtils.mjs";
+import {
+  request,
+  requestWithToken,
+  showNotification,
+} from "../utils/apiUtils.mjs";
+import { createAccounts } from "../../../testing/tests.mjs";
 
 if (localStorage.getItem("userDetails") != null) {
   var userDetails = JSON.parse(localStorage.getItem("userDetails"));
@@ -16,6 +21,18 @@ if (localStorage.getItem("userDetails") != null) {
 
 startPage();
 loadUsers();
+
+function deleteUser(userEmail, elementId) {
+  const deleteRequest = requestWithToken(
+    "DELETE",
+    `users/${userEmail}`,
+    localStorage.getItem("token")
+  );
+  console.log(deleteRequest[1]);
+  const element = document.getElementById(elementId);
+  element.remove();
+}
+
 async function loadUsers() {
   console.log(userDetails);
   let usersRequest = await requestWithToken(
@@ -26,7 +43,7 @@ async function loadUsers() {
   if (usersRequest[1].status == 200) {
     const users = usersRequest[0];
     usersRequest[0].map((element) => {
-      const userCardHtml = `<div class="users-grid admin-users">
+      const userCardHtml = `<div class="users-grid admin-users" id="${element.email}-user-card">
           <div class="user-card">
             <div class="user-avatar-section">
               <div class="user-avatar large admin-avatar">👤</div>
@@ -40,21 +57,23 @@ async function loadUsers() {
             <div class="user-permissions">
               <label for="permission-1">Nível de Permissão:</label>
               <select class="permission-dropdown" id="permission-1">
-                <option value="admin" selected>🔴 Administrador</option>
+              <option value="" selected>Selecione um valor</option>
+                <option value="admin" >🔴 Administrador</option>
                 <option value="moderator">🔵 Moderador</option>
                 <option value="seller">🟡 Vendedor</option>
                 <option value="customer">🟢 Cliente</option>
               </select>
             </div>
             <div class="user-actions">
-              <button class="btn-save">💾 Salvar</button>
-              <button class="btn-delete">🗑️ Deletar</button>
+              <button class="btn-save" id="${element.email}-updateButton">💾 Salvar</button>
+              <button class="btn-delete" id="${element.email}-deleteButton">🗑️ Deletar</button>
             </div>
           </div>`;
       switch (element.authorities.length) {
         case 4: // Admin
           const adminSection = document.getElementById("admin-users");
           adminSection.innerHTML += userCardHtml;
+
           break;
         case 3: // Moderator
           const modSection = document.getElementById("moderator-users");
@@ -70,6 +89,21 @@ async function loadUsers() {
           customerSection.innerHTML += userCardHtml;
           break;
       }
+    });
+    usersRequest[0].forEach((element) => {
+      const elementUpdateButton = document.getElementById(
+        `${element.email}-updateButton`
+      );
+      elementUpdateButton.addEventListener("click", (e) => {
+        console.log(document.getElementById(`${element.email}-user-card`));
+      });
+
+      const elementDeleteButton = document.getElementById(
+        `${element.email}-deleteButton`
+      );
+      elementDeleteButton.addEventListener("click", () =>
+        deleteUser(element.email, `${element.email}-user-card`)
+      );
     });
 
     // Atualizar contadores após carregar usuários
