@@ -1,4 +1,8 @@
-import { requestWithToken, showNotification } from "../utils/apiUtils.mjs";
+import {
+  request,
+  requestWithToken,
+  showNotification,
+} from "../utils/apiUtils.mjs";
 
 if (localStorage.getItem("userDetails") != null) {
   var userDetails = JSON.parse(localStorage.getItem("userDetails"));
@@ -16,8 +20,65 @@ if (localStorage.getItem("userDetails") != null) {
 
 startPage();
 loadUsers();
+
+async function updateUser(userEmail, elementId) {
+  const userCard = document.getElementById(elementId);
+
+  const roleSelected = parseInt(userCard.querySelector("#permission-1").value);
+  const selectedEmail = userCard.querySelector(".user-email").innerText;
+  const patchBody = {
+    role: roleSelected,
+  };
+
+  const roleUpdateRequest = await requestWithToken(
+    "PATCH",
+    `users/${selectedEmail}`,
+    localStorage.getItem("token"),
+    patchBody
+  );
+  if (roleUpdateRequest[1].status == 200) {
+    userCard.remove();
+
+    switch (roleSelected) {
+      case 1:
+        const custumerSection = document.querySelector(".customer-users");
+
+        custumerSection.appendChild(userCard);
+        break;
+      case 2:
+        const sellerSection = document.querySelector(".seller-users");
+
+        sellerSection.appendChild(userCard);
+        break;
+      case 3:
+        const modSection = document.querySelector(".moderator-users");
+
+        modSection.appendChild(userCard);
+        break;
+      case 4:
+        const adminSection = document.querySelector(".admin-users");
+
+        adminSection.appendChild(userCard);
+        break;
+      default:
+        showNotification("ERROR", "Cargo valido não encontrado");
+    }
+  }
+}
+
+async function deleteUser(userEmail, elementId) {
+  const deleteRequest = await requestWithToken(
+    "DELETE",
+    `users/${userEmail}`,
+    localStorage.getItem("token")
+  );
+  if (deleteRequest[1].status == 204) {
+    const element = document.getElementById(elementId);
+    element.remove();
+  }
+}
+
 async function loadUsers() {
-  console.log(userDetails);
   let usersRequest = await requestWithToken(
     "GET",
     "users",
@@ -26,7 +87,7 @@ async function loadUsers() {
   if (usersRequest[1].status == 200) {
     const users = usersRequest[0];
     usersRequest[0].map((element) => {
-      const userCardHtml = `<div class="users-grid admin-users">
+      const userCardHtml = `<div class="users-grid admin-users" id="${element.email}-user-card">
           <div class="user-card">
             <div class="user-avatar-section">
               <div class="user-avatar large admin-avatar">👤</div>
@@ -40,21 +101,23 @@ async function loadUsers() {
             <div class="user-permissions">
               <label for="permission-1">Nível de Permissão:</label>
               <select class="permission-dropdown" id="permission-1">
-                <option value="admin" selected>🔴 Administrador</option>
-                <option value="moderator">🔵 Moderador</option>
-                <option value="seller">🟡 Vendedor</option>
-                <option value="customer">🟢 Cliente</option>
+              <option value="" selected>Selecione um valor</option>
+                <option value="4" >🔴 Administrador</option>
+                <option value="3">🔵 Moderador</option>
+                <option value="2">🟡 Vendedor</option>
+                <option value="1">🟢 Cliente</option>
               </select>
             </div>
             <div class="user-actions">
-              <button class="btn-save">💾 Salvar</button>
-              <button class="btn-delete">🗑️ Deletar</button>
+              <button class="btn-save" id="${element.email}-updateButton">💾 Salvar</button>
+              <button class="btn-delete" id="${element.email}-deleteButton">🗑️ Deletar</button>
             </div>
           </div>`;
       switch (element.authorities.length) {
         case 4: // Admin
           const adminSection = document.getElementById("admin-users");
           adminSection.innerHTML += userCardHtml;
+
           break;
         case 3: // Moderator
           const modSection = document.getElementById("moderator-users");
@@ -70,6 +133,21 @@ async function loadUsers() {
           customerSection.innerHTML += userCardHtml;
           break;
       }
+    });
+    usersRequest[0].forEach((element) => {
+      const elementUpdateButton = document.getElementById(
+        `${element.email}-updateButton`
+      );
+      elementUpdateButton.addEventListener("click", (e) => {
+        updateUser(element.email, `${element.email}-user-card`);
+      });
+
+      const elementDeleteButton = document.getElementById(
+        `${element.email}-deleteButton`
+      );
+      elementDeleteButton.addEventListener("click", () =>
+        deleteUser(element.email, `${element.email}-user-card`)
+      );
     });
 
     // Atualizar contadores após carregar usuários

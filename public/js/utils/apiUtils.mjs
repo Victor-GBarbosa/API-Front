@@ -20,19 +20,15 @@ async function request(method, path, body) {
   }
 
   let response = null;
-  try {
+  if (request.status != 204) {
     response = await request.json();
-  } catch (error) {
-    console.log(error);
   }
-
   return [response, request];
 }
 
 async function requestWithToken(method, path, token, body) {
   let request;
-
-  if (method == "GET") {
+  if (body == undefined) {
     request = await fetch(config.apiUrl + path, {
       method: method,
       headers: {
@@ -50,8 +46,10 @@ async function requestWithToken(method, path, token, body) {
       body: JSON.stringify(body),
     });
   }
-
-  const response = await request.json();
+  let response = null;
+  if (request.status != 204) {
+    response = await request.json();
+  }
   return [response, request];
 }
 
