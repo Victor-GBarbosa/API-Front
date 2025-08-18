@@ -3,7 +3,6 @@ import {
   requestWithToken,
   showNotification,
 } from "../utils/apiUtils.mjs";
-import { createAccounts } from "../../../testing/tests.mjs";
 
 if (localStorage.getItem("userDetails") != null) {
   var userDetails = JSON.parse(localStorage.getItem("userDetails"));
@@ -22,19 +21,64 @@ if (localStorage.getItem("userDetails") != null) {
 startPage();
 loadUsers();
 
-function deleteUser(userEmail, elementId) {
-  const deleteRequest = requestWithToken(
+async function updateUser(userEmail, elementId) {
+  const userCard = document.getElementById(elementId);
+
+  const roleSelected = parseInt(userCard.querySelector("#permission-1").value);
+  const selectedEmail = userCard.querySelector(".user-email").innerText;
+  const patchBody = {
+    role: roleSelected,
+  };
+
+  const roleUpdateRequest = await requestWithToken(
+    "PATCH",
+    `users/${selectedEmail}`,
+    localStorage.getItem("token"),
+    patchBody
+  );
+  if (roleUpdateRequest[1].status == 200) {
+    userCard.remove();
+
+    switch (roleSelected) {
+      case 1:
+        const custumerSection = document.querySelector(".customer-users");
+
+        custumerSection.appendChild(userCard);
+        break;
+      case 2:
+        const sellerSection = document.querySelector(".seller-users");
+
+        sellerSection.appendChild(userCard);
+        break;
+      case 3:
+        const modSection = document.querySelector(".moderator-users");
+
+        modSection.appendChild(userCard);
+        break;
+      case 4:
+        const adminSection = document.querySelector(".admin-users");
+
+        adminSection.appendChild(userCard);
+        break;
+      default:
+        showNotification("ERROR", "Cargo valido não encontrado");
+    }
+  }
+}
+
+async function deleteUser(userEmail, elementId) {
+  const deleteRequest = await requestWithToken(
     "DELETE",
     `users/${userEmail}`,
     localStorage.getItem("token")
   );
-  console.log(deleteRequest[1]);
-  const element = document.getElementById(elementId);
-  element.remove();
+  if (deleteRequest[1].status == 204) {
+    const element = document.getElementById(elementId);
+    element.remove();
+  }
 }
 
 async function loadUsers() {
-  console.log(userDetails);
   let usersRequest = await requestWithToken(
     "GET",
     "users",
@@ -58,10 +102,10 @@ async function loadUsers() {
               <label for="permission-1">Nível de Permissão:</label>
               <select class="permission-dropdown" id="permission-1">
               <option value="" selected>Selecione um valor</option>
-                <option value="admin" >🔴 Administrador</option>
-                <option value="moderator">🔵 Moderador</option>
-                <option value="seller">🟡 Vendedor</option>
-                <option value="customer">🟢 Cliente</option>
+                <option value="4" >🔴 Administrador</option>
+                <option value="3">🔵 Moderador</option>
+                <option value="2">🟡 Vendedor</option>
+                <option value="1">🟢 Cliente</option>
               </select>
             </div>
             <div class="user-actions">
@@ -95,7 +139,7 @@ async function loadUsers() {
         `${element.email}-updateButton`
       );
       elementUpdateButton.addEventListener("click", (e) => {
-        console.log(document.getElementById(`${element.email}-user-card`));
+        updateUser(element.email, `${element.email}-user-card`);
       });
 
       const elementDeleteButton = document.getElementById(

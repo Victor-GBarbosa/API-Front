@@ -20,7 +20,7 @@ async function request(method, path, body) {
   }
 
   let response = null;
-  if (request.stauts != 204) {
+  if (request.status != 204) {
     response = await request.json();
   }
   return [response, request];
@@ -47,7 +47,6 @@ async function requestWithToken(method, path, token, body) {
     });
   }
   let response = null;
-  console.log(request.status);
   if (request.status != 204) {
     response = await request.json();
   }
