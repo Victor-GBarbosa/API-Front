@@ -244,10 +244,7 @@ if (registerProductButton) {
 
 if (cartButton) {
   cartButton.addEventListener("click", () => {
-    showNotification(
-      "INFO",
-      "Funcionalidade do carrinho será implementada em breve"
-    );
+    window.location.href = "./cart.html";
   });
 }
 

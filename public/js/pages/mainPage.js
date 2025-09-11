@@ -1,4 +1,8 @@
-import { request, showNotification } from "../utils/apiUtils.mjs";
+import {
+  request,
+  requestWithToken,
+  showNotification,
+} from "../utils/apiUtils.mjs";
 
 if (localStorage.getItem("userDetails") != null) {
   var userDetails = JSON.parse(localStorage.getItem("userDetails"));
@@ -57,10 +61,7 @@ if (registerProductButton) {
 
 if (cartButton) {
   cartButton.addEventListener("click", () => {
-    showNotification(
-      "INFO",
-      "Funcionalidade do carrinho será implementada em breve"
-    );
+    window.location.href = "./cart.html";
   });
 }
 
@@ -128,17 +129,17 @@ async function renderProducts() {
   const productsGrid = document.getElementById("products-grid");
 
   const products = await request("GET", "product");
+  console.log(products);
   if (products[1].status == 200) {
     const productsHTML = products[0]
       .map(
-        (product) => `
+        (product) =>
+          `
     <div class="product-card">
       <div class="product-image"><img src="${product.imageUrl}"></div>
       <h3 class="product-title">${product.name}</h3>
       <p class="product-price">R$${product.price}</p>
-      <button class="product-button" onclick="addToCart(${parseFloat(
-        product.id
-      )})">
+      <button class="product-button" id="addToCartBtn-${product.id}">
         Adicionar ao Carrinho
       </button>
     </div>
@@ -146,11 +147,41 @@ async function renderProducts() {
       )
       .join("");
     productsGrid.innerHTML = productsHTML;
+    let itemList = document.getElementById("products-grid");
+    console.log(itemList.children);
+    Array.from(itemList.children).forEach((item) => {
+      console.log(Array.from(item.children));
+      Array.from(item.children)[3].addEventListener("click", (e) => {
+        addToCart(e.target.id.split("-")[1]);
+        alert();
+      });
+    });
   } else {
     showNotification(
       "ERROR",
       products[1].status + ": Não foi possivel carregar os produtos"
     );
+  }
+}
+
+async function addToCart(id) {
+  try {
+    const requestBody = {
+      product: {
+        id: id,
+      },
+      quantity: 1,
+    };
+
+    console.log(requestBody);
+    let addToCartRequest = requestWithToken(
+      "PATCH",
+      `users/${localStorage.getItem("email")}/order/addProduct`,
+      localStorage.getItem("token"),
+      requestBody
+    );
+  } catch (TypeError) {
+    showNotification("ERROR", "Erro ao adicionar item no carrinho");
   }
 }
 

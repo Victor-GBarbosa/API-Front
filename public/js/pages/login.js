@@ -42,13 +42,16 @@ form.addEventListener("submit", async (e) => {
     );
 
     const userResponse = userRequest[0];
+    if (userRequest[1].status == 200) {
+      localStorage.setItem("userDetails", JSON.stringify(userResponse));
 
-    localStorage.setItem("userDetails", JSON.stringify(userResponse));
-
-    localStorage.setItem("password", userResponse.password);
-    localStorage.setItem("email", userResponse.email);
-    localStorage.setItem("token", userLogin.token);
-    window.location.reload(true);
+      localStorage.setItem("password", userResponse.password);
+      localStorage.setItem("email", userResponse.email);
+      localStorage.setItem("token", userLogin.token);
+      window.location.reload(true);
+    } else {
+      showNotification("ERROR", userRequest[1] + " Error");
+    }
   }
 });
 

@@ -7,6 +7,7 @@ const cancelButton = document.getElementById("cancel-button");
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   let user = register();
+  console.log(user);
 
   try {
     const resp = await request("POST", "auth/register", user);
@@ -22,6 +23,7 @@ form.addEventListener("submit", async (e) => {
         "ERROR",
         `Erro ${resp[1].status}: Não foi possível criar o usuário`
       );
+      console.log(resp[0], resp[1]);
     }
   } catch (error) {
     console.error("Erro no registro:", error);
