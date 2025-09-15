@@ -4,55 +4,65 @@ import {
   requestWithToken,
 } from "../utils/apiUtils.mjs";
 
+//== Variaves globais ==
+
 let cartItems = [];
-let itensRequest;
-//User cart request
-try {
-  itensRequest = await requestWithToken(
-    "GET",
-    `users/${localStorage.getItem("email")}/cart`,
-    localStorage.getItem("token")
-  );
-} catch (TypeError) {
-  showNotification("ERROR", "Não foi possivel carregar o carrinho");
-}
+let changed = false;
+cartItems = await requestUserCart();
+console.log(cartItems);
 
-console.log(itensRequest);
+// == Inicialicação da pagina ==
 
-if (itensRequest[1].status == 200) {
-  cartItems = itensRequest[0].orderProductList;
-  console.log(cartItems);
-} else if (itensRequest[1].status == 404) {
-  showNotification(
-    "ERROR",
-    itensRequest[1].status + " Carrinho não encontrado"
-  );
-} else {
-  showNotification(
-    "ERROR",
-    itensRequest[1].status + " Não foi possivel iniciar o carrinho"
-  );
-}
+initCart();
 
-renderCartItens();
+// == Funções ==
+
 // =====================
-// Renderização do Carrinho
+// Renderização do Carrinho // Completa
 // =====================
+
+async function requestUserCart() {
+  let itensRequest;
+  try {
+    itensRequest = await requestWithToken(
+      "GET",
+      `users/${localStorage.getItem("email")}/cart`,
+      localStorage.getItem("token")
+    );
+  } catch (TypeError) {
+    showNotification("ERROR", "Não foi possivel carregar o carrinho");
+  }X
+  } else if (itensRequest[1].status == 404) {
+    showNotification(
+      "ERROR",
+      itensRequest[1].status + " Carrinho não encontrado"
+    );
+    return null;
+  } else {
+    showNotification(
+      "ERROR",
+      itensRequest[1].status + " Não foi possivel iniciar o carrinho"
+    );
+    return null;
+  }
+}
 
 function renderCartItens() {
   if (cartItems.length > 0) {
     document.getElementById("empty-cart").remove();
-    cartItems.forEach((item) => {
-      console.log(item);
-      console.log();
+    document.getElementById("checkout-btn").disabled = false;
+
+    cartItems.forEach((orderItem, i) => {
       document
         .getElementById("cart-items-list")
-        .append(createCartItemElement(item.product, item));
+        .append(createCartItemElement(orderItem.product, i, orderItem));
+      changeItemBtnsEventListeners(orderItem.product.id + "-" + i);
+      removeItemFromCart(orderItem.product.id + "-" + i);
     });
   }
 }
 
-function createCartItemElement(item, orderItem) {
+function createCartItemElement(item, itemIndex, orderItem) {
   const cartItem = document.createElement(`div-${item.id}`);
   cartItem.className = "cart-item";
   cartItem.setAttribute("data-item-id", item.id);
@@ -70,8 +80,8 @@ function createCartItemElement(item, orderItem) {
     </div>
     <div class="item-controls">
       <div class="quantity-controls">
-        <button class="quantity-btn decrease-btn" data-action="decrease" data-id="${
-          item.id
+        <button class="quantity-btn decrease-btn" id="decreaseBtn-${
+          item.id + "-" + itemIndex
         }">
           -
         </button>
@@ -81,15 +91,16 @@ function createCartItemElement(item, orderItem) {
           value="${orderItem.quantity}" 
           min="1" 
           max="99"
-          data-id="${item.id}"
+          id="quantityInput-${item.id + "-" + itemIndex}"
         />
-        <button class="quantity-btn increase-btn" data-action="increase" data-id="${
-          item.id
-        }">
+        <button class="quantity-btn increase-btn" id="increaseBtn-${
+          item.id + "-" + itemIndex
+        }"
+      >
           +
         </button>
       </div>
-      <button class="remove-btn" data-action="remove" data-id="${item.id}">
+      <button class="remove-btn"  id="removeBtn-${item.id + "-" + itemIndex}">
         🗑️ Remover
       </button>
     </div>
@@ -99,161 +110,77 @@ function createCartItemElement(item, orderItem) {
 }
 
 // =====================
+// Resumo do pedido
+// =====================
+
+function updateCartSummary() {
+  let total = document.getElementById("total");
+  let sum = 0;
+  if (cartItems.length > 0) {
+    cartItems.forEach((item) => {
+      sum += item.product.price * item.quantity;
+    });
+    total.textContent =
+      "R$ " +
+      (
+        sum +
+        parseFloat(
+          document.getElementById("shipping").textContent.split(" ")[1]
+        )
+      ).toLocaleString("BRL");
+  }
+}
+
+// =====================
 // Event Listeners
 // =====================
-function attachCartItemEventListeners() {
-  // Botões de quantidade
-  document.querySelectorAll(".quantity-btn").forEach((btn) => {
-    btn.addEventListener("click", handleQuantityChange);
-  });
-
-  // Inputs de quantidade
-  document.querySelectorAll(".quantity-input").forEach((input) => {
-    input.addEventListener("change", handleQuantityInputChange);
-    input.addEventListener("blur", handleQuantityInputChange);
-  });
-
-  // Botões de remoção
-  document.querySelectorAll(".remove-btn").forEach((btn) => {
-    btn.addEventListener("click", handleItemRemove);
-  });
-}
-
-function handleQuantityChange(event) {
-  const action = event.target.getAttribute("data-action");
-  const itemId = parseInt(event.target.getAttribute("data-id"));
-
-  if (action === "increase") {
-    changeItemQuantity(itemId, 1);
-  } else if (action === "decrease") {
-    changeItemQuantity(itemId, -1);
-  }
-}
-
-function handleQuantityInputChange(event) {
-  const itemId = parseInt(event.target.getAttribute("data-id"));
-  const newQuantity = parseInt(event.target.value);
-
-  if (newQuantity > 0 && newQuantity <= 99) {
-    setItemQuantity(itemId, newQuantity);
-  } else {
-    // Restaurar valor anterior se inválido
-    const item = cartItems.find((i) => i.id === itemId);
-    if (item) {
-      event.target.value = item.quantity;
-    }
-  }
-}
-
-function handleItemRemove(event) {
-  const itemId = parseInt(event.target.getAttribute("data-id"));
-  const item = cartItems.find((i) => i.id === itemId);
-
-  if (item && confirm(`Deseja remover "${item.name}" do carrinho?`)) {
-    removeItemFromCart(itemId);
-  }
-}
 
 // =====================
 // Lógica de Manipulação do Carrinho
 // =====================
-function changeItemQuantity(itemId, delta) {
-  const item = cartItems.find((i) => i.id === itemId);
-  if (!item) return;
+function changeItemBtnsEventListeners(id) {
+  const increaseBtn = document.getElementById("increaseBtn-" + id);
+  const deacreaseBtn = document.getElementById("decreaseBtn-" + id);
+  const quantityCounter = document.getElementById("quantityInput-" + id);
 
-  const newQuantity = item.quantity + delta;
-  if (newQuantity > 0 && newQuantity <= 99) {
-    item.quantity = newQuantity;
-    saveCartToStorage();
-    updateCartDisplay();
-    showNotification("SUCCESS", "Quantidade atualizada");
-  }
+  increaseBtn.onclick = (e) => {
+    quantityCounter.value = parseInt(quantityCounter.value) + 1;
+    cartItems[parseInt(id.split("-")[1])].quantity = quantityCounter.value;
+    updateCartSummary();
+  };
+
+  deacreaseBtn.onclick = (e) => {
+    if (quantityCounter.value > 0)
+      quantityCounter.value = parseInt(quantityCounter.value) - 1;
+    cartItems[parseInt(id.split("-")[1])].quantity = quantityCounter.value;
+    updateCartSummary();
+  };
+
+  quantityCounter.onchange = (e) => {
+    cartItems[parseInt(id.split("-")[1])].quantity = quantityCounter.value;
+    updateCartSummary();
+  };
 }
 
-function setItemQuantity(itemId, quantity) {
-  const item = cartItems.find((i) => i.id === itemId);
-  if (!item) return;
+function removeItemFromCart(id) {
+  const removeBtn = document.getElementById("removeBtn-" + id);
 
-  if (quantity > 0 && quantity <= 99) {
-    item.quantity = quantity;
-    saveCartToStorage();
-    updateCartDisplay();
-  }
-}
+  removeBtn.onclick = () => {
+    cartItems = cartItems.filter(
+      (orderProduct) => orderProduct.product.id != id.split("-")[0]
+    );
+    console.log(cartItems);
 
-function removeItemFromCart(itemId) {
-  const itemIndex = cartItems.findIndex((i) => i.id === itemId);
-  if (itemIndex > -1) {
-    const removedItem = cartItems.splice(itemIndex, 1)[0];
-
-    // Animação de remoção
-    const itemElement = document.querySelector(`[data-item-id="${itemId}"]`);
-    if (itemElement) {
-      itemElement.style.transition = "all 0.3s ease";
-      itemElement.style.transform = "translateX(-100%)";
-      itemElement.style.opacity = "0";
-
-      setTimeout(() => {
-        saveCartToStorage();
-        updateCartDisplay();
-        showNotification(
-          "SUCCESS",
-          `"${removedItem.name}" foi removido do carrinho`
-        );
-      }, 300);
-    } else {
-      saveCartToStorage();
-      updateCartDisplay();
-      showNotification(
-        "SUCCESS",
-        `"${removedItem.name}" foi removido do carrinho`
-      );
-    }
-  }
-}
-
-function clearCart() {
-  if (cartItems.length === 0) {
-    showNotification("WARNING", "O carrinho já está vazio");
-    return;
-  }
-
-  if (confirm("Tem certeza que deseja limpar todo o carrinho?")) {
-    cartItems = [];
-    saveCartToStorage();
-    updateCartDisplay();
-    showNotification("SUCCESS", "Carrinho limpo com sucesso");
-  }
+    updateCartSummary();
+  };
 }
 
 // =====================
 // Função Principal de Inicialização
 // =====================
 function initCart() {
-  console.log("Inicializando carrinho de compras...");
-
-  // Verificar se usuário está logado
-  if (!localStorage.getItem("userDetails")) {
-    showNotification("ERROR", "Acesso negado. Faça login para continuar.");
-    window.location.href = "../index.html";
-    return;
-  }
-
-  initializeCart();
-  initializeEventListeners();
-  updateCartDisplay();
-
-  // Mostrar mensagem de boas-vindas
-  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
-  if (userDetails && userDetails.name) {
-    setTimeout(() => {
-      showNotification(
-        "INFO",
-        `Olá ${userDetails.name}! Seu carrinho foi carregado.`
-      );
-    }, 1000);
-  }
+  renderCartItens();
+  updateCartSummary();
 }
-
 // Inicializar quando DOM estiver pronto
 document.addEventListener("DOMContentLoaded", initCart);
